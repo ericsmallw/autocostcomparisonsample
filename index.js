@@ -63,7 +63,7 @@ app.controller('ctrl', function($scope, CONSTANTS){
                       CONSTANTS.INSURANCE_COST_PER_YEAR +
                       CONSTANTS.TAX_COST_PER_YEAR]
            },{
-               name: 'PARKING',
+               name: 'Parking',
                data: [CONSTANTS.PARKING_COST_PER_DAY + CONSTANTS.WORKDAYS_OF_THE_YEAR]
            }
            ]
