@@ -7,7 +7,7 @@
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="third%20party%20scripts/Highcharts-4.1.8/js/highcharts.js"></script>
     <script src="third%20party%20scripts/Highcharts-4.1.8/js/modules/exporting.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular.js"></script>
     <script src="index.js"></script>
 </head>
 <body ng-controller="ctrl">
@@ -16,6 +16,7 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
+            <form>
             <div class="form-group">
                 <label for="carCost">Cost of Car</label>
                 <input class="form-control" id="carCost" type="text" width="100px" ng-model="carCost"/>
