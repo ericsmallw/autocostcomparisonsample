@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="third%20party%20scripts/Highcharts-4.1.8/js/highcharts.js"></script>
+    <script src="third%20party%20scripts/Highcharts-4.1.8/js/modules/exporting.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="index.js"></script>
+</head>
+<body ng-controller="ctrl">
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="carCost">Cost of Car</label>
+                <input class="form-control" id="carCost" type="text" width="100px" ng-model="carCost"/>
+            </div>
+            <div class="form-group">
+                <label for="distanceToWork">KM To Workplace</label>
+                <input class="form-control" id="distanceToWork" type="text" width="100px" ng-model="distanceToWork"/>
+            </div>
+            <div>
+                <label for="timeToWork">Minutes To Workplace</label>
+                <input class="form-control" id="timeToWork" type="text" width="100px" ng-model="timeToWork"/>
+            </div>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+<form>
+
+
+
+<div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+</body>
+</html>
