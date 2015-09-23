@@ -3,15 +3,17 @@
  */
 var app = angular.module('app', []);
 app.constant('CONSTANTS', {
-    WORKDAYS_OF_THE_YEAR: 261,
-    PRICE_PER_LITRE_AUS: 1.26,
-    FUEL_CONSUMPTION_PER_100KM: 8,
-    DEPRECIATION:.20,
-    SERVICE_COST_PER_YEAR: 2800,
-    INSURANCE_COST_PER_YEAR: 2800,
-    TAX_COST_PER_YEAR: 280,
-    FINANCING_COST_PPY: .05,
-    PARKING_COST_PER_DAY: 10
+    WORKDAYS_OF_THE_YEAR: 241,
+    PRICE_PER_LITRE_AUS: 1.4,
+    FUEL_CONSUMPTION_PER_100KM: 7,
+    DEPRECIATION:.12,
+    SERVICE_COST_PER_YEAR: 120,
+    INSURANCE_COST_PER_YEAR: 250,
+    TAX_COST_PER_YEAR: 256,
+    FINANCING_COST_PPY: .08,
+    PARKING_COST_PER_DAY: 3,
+    UBER_PRICE_PER_MIN: .1,
+    UBER_PRICE_PER_KM:.41
 });
 
 
@@ -20,8 +22,16 @@ app.controller('ctrl', function($scope, CONSTANTS){
     $scope.distanceToWork = 0;
     $scope.timeToWork = 0;
     $scope.$watch("[carCost, distanceToWork, timeToWork]", function(newValue, oldValue){
-
-       $('#container').highcharts({
+        var financingCost = ($scope.carCost * CONSTANTS.FINANCING_COST_PPY);
+        var gasCost = ($scope.distanceToWork * 2) * CONSTANTS.WORKDAYS_OF_THE_YEAR *
+                      (CONSTANTS.FUEL_CONSUMPTION_PER_100KM /100)* CONSTANTS.PRICE_PER_LITRE_AUS;
+        var costOfDepreciation = $scope.carCost * CONSTANTS.DEPRECIATION;
+        var miscellaneousCosts = CONSTANTS.SERVICE_COST_PER_YEAR + CONSTANTS.INSURANCE_COST_PER_YEAR +
+                                 CONSTANTS.TAX_COST_PER_YEAR;
+        var parkingCost = CONSTANTS.PARKING_COST_PER_DAY + CONSTANTS.WORKDAYS_OF_THE_YEAR;
+        var timeCost = CONSTANTS.UBER_PRICE_PER_MIN * ($scope.timeToWork * 2) * CONSTANTS.WORKDAYS_OF_THE_YEAR;
+        var distanceCost = CONSTANTS.UBER_PRICE_PER_KM * ($scope.distanceToWork * 2) * CONSTANTS.WORKDAYS_OF_THE_YEAR;
+        $('#container').highcharts({
             chart: {
               type: 'bar'
             },
@@ -29,7 +39,7 @@ app.controller('ctrl', function($scope, CONSTANTS){
                 text: 'Cost Comparison'
             },
             xAxis: {
-                categories: ["Owning a Car"]
+                categories: ["Owning a Car", "The Uber Alternative"]
             },
             yAxis: {
                 min: 0,
@@ -47,27 +57,45 @@ app.controller('ctrl', function($scope, CONSTANTS){
            },
            series: [{
                name: 'Financing Cost',
-               data: [($scope.carCost * CONSTANTS.FINANCING_COST_PPY)]
+               data: [financingCost]
            }, {
                name: 'Gas Cost',
-               data: [$scope.distanceToWork *
-                      CONSTANTS.WORKDAYS_OF_THE_YEAR *
-                      (CONSTANTS.FUEL_CONSUMPTION_PER_100KM /100)*
-                      CONSTANTS.PRICE_PER_LITRE_AUS]
+               data: [gasCost]
            },{
                name: 'Depreciation',
-               data: [$scope.carCost * CONSTANTS.DEPRECIATION]
+               data: [costOfDepreciation]
            },{
                name: 'Miscellaneous',
-               data: [CONSTANTS.SERVICE_COST_PER_YEAR +
-                      CONSTANTS.INSURANCE_COST_PER_YEAR +
-                      CONSTANTS.TAX_COST_PER_YEAR]
+               data: [miscellaneousCosts]
            },{
                name: 'Parking',
-               data: [CONSTANTS.PARKING_COST_PER_DAY + CONSTANTS.WORKDAYS_OF_THE_YEAR]
+               data: [parkingCost]
+           },{
+               name: 'Time Cost',
+               data: [0, timeCost]
+           }, {
+               name: 'Distance Cost',
+               data: [0, distanceCost]
            }
            ]
 
-       });
+        });
+
+        var totalCostOfCar = financingCost + gasCost + costOfDepreciation + miscellaneousCosts + parkingCost;
+        var totalUberCost = timeCost + distanceCost;
+        var totalDrivingTime = ((($scope.timeToWork * 2) * CONSTANTS.WORKDAYS_OF_THE_YEAR)/60).toFixed(0);
+        var text;
+        if(totalUberCost < totalCostOfCar){
+            var percentageSavings = Math.round((1 - ((totalUberCost)/totalCostOfCar)) * 100);
+            var monetarySavings = (totalCostOfCar - totalUberCost).toFixed(2);
+
+            text = "Uber is " + percentageSavings + "% cheaper than using your own car, saving you " + monetarySavings
+                    + " EUR and " + totalDrivingTime + " hours per year!"
+        }else{
+            text = "If you are prepared to spend " + totalDrivingTime + " hours driving per year, then it might be bettter" +
+                   " for you to use your own car...";
+        }
+
+        $('#resultText').text(text);
     }, true);
 });
