@@ -92,7 +92,7 @@ app.controller('ctrl', function($scope, CONSTANTS){
             text = "Uber is " + percentageSavings + "% cheaper than using your own car, saving you " + monetarySavings
                     + " EUR and " + totalDrivingTime + " hours per year!"
         }else{
-            text = "If you are prepared to spend " + totalDrivingTime + " hours driving per year, then it might be bettter" +
+            text = "If you are prepared to spend " + totalDrivingTime + " hours driving per year, then it might be better" +
                    " for you to use your own car...";
         }
 
